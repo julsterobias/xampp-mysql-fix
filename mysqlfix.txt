@@ -1,0 +1,74 @@
+@echo off
+setlocal
+
+REM Define the current folder path and the new name
+set "currentFolder=data"
+
+REM Get the current date and time and format it
+for /f "tokens=2 delims==" %%i in ('wmic OS get LocalDateTime /value') do set "datetime=%%i"
+set "YYYY=%datetime:~0,4%"
+set "MM=%datetime:~4,2%"
+set "DD=%datetime:~6,2%"
+set "HH=%datetime:~8,2%"
+set "Min=%datetime:~10,2%"
+set "Sec=%datetime:~12,2%"
+
+REM Create a timestamp in the format YYYY-MM-DD_HH-MM-SS
+set "timestamp=%YYYY%-%MM%-%DD%_%HH%-%Min%-%Sec%"
+
+REM Set the new folder name using the current date and time
+set "newFolderWithDate=data-bat-%timestamp%"
+set "newFolder=data-bat-temp"
+
+REM Check if the current folder exists
+if not exist "%currentFolder%" (
+    echo Folder "%currentFolder%" not found!
+    pause
+    exit /b
+)
+
+REM Rename the folder
+rename "%currentFolder%" "%newFolder%"
+
+echo Folder renamed successfully from "%currentFolder%" to "%newFolder%"
+
+
+xcopy "%~dp0backup" "%~dp0data" /E /I /H /Y
+echo Folder "backup" is successfully copied and renamed to "data"
+
+
+REM Set source and destination folders relative to the batch file location
+set "sourceFolder=%~dp0data-bat-temp\{database-folder}"
+set "sourceFile=%~dp0data-bat-temp\ibdata1"
+set "destinationFolder=%~dp0data"
+
+REM Check if the source folder exists
+if not exist "%sourceFolder%" (
+    echo Source folder "%sourceFolder%" not found!
+    pause
+    exit /b
+)
+
+REM Check if the source file exists
+if not exist "%sourceFile%" (
+    echo Source file "%sourceFile%" not found!
+    pause
+    exit /b
+)
+
+
+REM Copy the entire folder
+xcopy "%sourceFolder%" "%destinationFolder%\{database-folder}" /E /I /H /Y
+echo Folder copied successfully!
+
+REM Copy the single file
+copy "%sourceFile%" "%destinationFolder%\ibdata1" /Y
+echo File copied successfully!
+
+REM Rename the folder
+rename "%newFolder%" "%newFolderWithDate%"
+
+echo "Bat execution is completed"
+pause
+
+endlocal
