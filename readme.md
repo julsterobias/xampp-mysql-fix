@@ -1,6 +1,6 @@
 # Ver 0.0.1 fetus
 
-# XAMPP MySQL shutdown unexpectedly FIX
+## ERROR: XAMPP MySQL shutdown unexpectedly FIX
 
 ## What it will do?
 - Rename the "data" folder to "data-bat-temp"
