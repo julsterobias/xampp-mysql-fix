@@ -11,8 +11,8 @@
 
 ## Setup
 - Copy the mysqlfix.txt and paste to xampp/mysql folder
-- Edit the mysqlfix.txt, find the {database-folder}
-- Change the {database-folder} to your database folder
+- Edit the mysqlfix.txt and look for {database-folder}
+- Change the {database-folder} to your database folder name
 - Change the extension of mysqlfix.txt to .bat
 - Run the .bat file and run again your mySQL
 - Continue coding
